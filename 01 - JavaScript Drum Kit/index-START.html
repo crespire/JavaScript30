@@ -58,6 +58,29 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  // Add listeners
+  window.addEventListener('keydown', doStuff);
+
+  const keys = document.querySelectorAll('.key');  
+  keys.forEach (key => key.addEventListener('transitionend', removeTransition));
+
+  // Event handlers
+  function doStuff(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+
+    if (!audio) return; // If no audio element, exit
+    
+    audio.currentTime = 0; // Starts the audio file from the beginning every keypress.
+    audio.play();
+    key.classList.add('playing');
+  }
+
+  function removeTransition(e) {
+    if(e.propertyName !== 'transform') return; // Don't care about other transition events, aside form CSS transform
+    
+    this.classList.remove('playing'); // Removes the style
+  }
 
 </script>
 
